@@ -86,11 +86,7 @@ package punk.ui
 		 * Text string for this component
 		 */
 		protected var textString:String = "";
-		
-		/**
-		 * Has the component been inititalized
-		 */
-		protected var initialised:Boolean = false;
+
 		
 		/**
 		 * Constructor
@@ -177,13 +173,13 @@ package punk.ui
 		override public function update():void{
 			super.update();
 			
-			if(!initialised)
+			if(Input.mouseDown)
 			{
-				if(FP.stage) {
-					FP.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown, false, 0, true);
-					FP.stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp, false, 0, true);
-					initialised = true;
-				}
+				onMouseDown();
+			}
+			else if (Input.mouseReleased) 
+			{
+				onMouseUp();
 			}
 			
 			if(hotkey != 0)
@@ -292,33 +288,6 @@ package punk.ui
 			if(!active || !Input.mouseReleased || !isPressed) return;
 			if(isPressed) isPressed = false;
 			if(isMoused) releasedCallback();
-		}
-		
-		/**
-		 * @private
-		 */
-		override public function added():void {
-			super.added();
-			
-			initialised = false;
-			
-			if(FP.stage) {
-				FP.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown, false, 0, true);
-				FP.stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp, false, 0, true);
-				initialised = true;
-			}
-		}
-		
-		/**
-		 * @private
-		 */
-		override public function removed():void {
-			super.removed();
-			
-			if(FP.stage) {
-				FP.stage.removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-				FP.stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-			}
 		}
 		
 		protected var _currentGraphic:int = 0;
